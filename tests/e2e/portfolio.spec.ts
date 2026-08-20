@@ -17,7 +17,7 @@ test("leads with products and keeps the broader archive available", async ({
     page.getByRole("heading", { name: "Read faster. Stay focused." }),
   ).toBeVisible();
 
-  await page.getByRole("button", { name: /View the list/ }).click();
+  await page.locator("details.archive-disclosure > summary").click();
   expect(await page.locator(".archive-row").count()).toBeGreaterThan(0);
   await expect(page.locator(".archive-number")).toHaveCount(0);
   await page.getByRole("button", { name: /OpenCode Plugin 4/ }).click();
@@ -27,14 +27,15 @@ test("leads with products and keeps the broader archive available", async ({
   await expect(page.locator(".archive-name")).toContainText("opencode-later");
   await page.getByPlaceholder("Search projects").fill("");
   await page.getByRole("button", { name: /All 18/ }).click();
+  await expect(
+    page.locator(".archive-name", { hasText: "GitNotes" }),
+  ).toBeVisible();
   await page
     .getByRole("button", { name: /View .* demo/ })
     .first()
     .click();
   await expect(page.locator(".archive-media-dialog[open]")).toHaveCount(1);
-  await expect(
-    page.locator(".archive-name", { hasText: "GitNotes" }),
-  ).toBeVisible();
+  await page.getByRole("button", { name: "Close" }).click();
 
   await expect(
     page.getByRole("link", { name: "contact@mail.lid.top" }),
@@ -60,7 +61,9 @@ test("keeps product and archive content when JavaScript is disabled", async ({
   await expect(page.locator(".product-spotlight")).toHaveCount(2);
   expect(await page.locator(".archive-row").count()).toBeGreaterThan(0);
   await expect(
-    page.getByText("MongoDB", { exact: true }).first(),
+    page.locator("#about").getByRole("heading", {
+      name: "Software Engineer III at MongoDB.",
+    }),
   ).toBeVisible();
   await expect(page.locator("#dailies video source")).toHaveCount(2);
   await expect(page.locator("#verbish video source")).toHaveCount(2);
