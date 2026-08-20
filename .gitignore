@@ -1,0 +1,9 @@
+node_modules/
+dist/
+playwright-report/
+test-results/
+public/media/
+public/social-card.png
+.DS_Store
+*.log
+AGENTS.md
