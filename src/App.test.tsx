@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import App from "./App";
 import { projects } from "./content/projects";
+import { spotlightProducts } from "./content/products";
 
 const disposals: Array<() => void> = [];
 
@@ -18,64 +19,63 @@ afterEach(() => {
   document.body.replaceChildren();
 });
 
-describe("portfolio application", () => {
-  it("renders the static portfolio structure", () => {
+describe("product-focused personal site", () => {
+  it("puts current products before the supporting archive", () => {
     const host = mountApp();
-
-    expect(host.querySelector("h1")?.textContent).toContain("build tools");
-    expect(host.querySelectorAll(".project-card")).toHaveLength(
-      projects.length,
-    );
-    expect(host.querySelectorAll(".experience-index > li")).toHaveLength(5);
-  });
-
-  it("filters the project catalog by search text", async () => {
-    const host = mountApp();
-    const search = host.querySelector<HTMLInputElement>('input[type="search"]');
-    expect(search).not.toBeNull();
-
-    search!.value = "GitNotes";
-    search!.dispatchEvent(
-      new InputEvent("input", { bubbles: true, data: "GitNotes" }),
-    );
-    await Promise.resolve();
-
-    expect(host.querySelectorAll(".project-card")).toHaveLength(1);
-    expect(host.querySelector(".project-card h3")?.textContent).toBe(
-      "GitNotes",
-    );
-  });
-
-  it("renders a useful empty state", async () => {
-    const host = mountApp();
-    const search = host.querySelector<HTMLInputElement>('input[type="search"]');
-
-    search!.value = "definitely not a project";
-    search!.dispatchEvent(new InputEvent("input", { bubbles: true }));
-    await Promise.resolve();
-
-    expect(host.querySelector(".empty-state h3")?.textContent).toBe(
-      "No projects found.",
-    );
-  });
-
-  it("prefers a project's live destination for the card click", () => {
-    const host = mountApp();
-    const gitNotes = Array.from(host.querySelectorAll(".project-card")).find(
-      (card) => card.querySelector("h3")?.textContent === "GitNotes",
-    );
 
     expect(
-      gitNotes?.querySelector<HTMLAnchorElement>(".card-title a")?.href,
-    ).toBe(
-      "https://chromewebstore.google.com/detail/gitnotes/inhgnndenedfophhcbpjdocjkdgomklm",
+      Array.from(host.querySelectorAll("h1 a"), (link) => link.textContent),
+    ).toEqual(["dailies.now", "verbish.now"]);
+    expect(host.querySelectorAll(".product-spotlight")).toHaveLength(
+      spotlightProducts.length,
     );
+    expect(host.querySelectorAll(".archive-row")).toHaveLength(projects.length);
+    expect(host.querySelectorAll(".career-list > li")).toHaveLength(5);
   });
 
-  it("renders projects in true recency order", () => {
+  it("links directly to both products and the contact address", () => {
     const host = mountApp();
-    const titles = Array.from(host.querySelectorAll(".project-card h3")).map(
-      (heading) => heading.textContent,
+
+    expect(
+      host.querySelector<HTMLAnchorElement>(
+        '.product-dailies a[href="https://dailies.now"]',
+      ),
+    ).not.toBeNull();
+    expect(
+      host.querySelector<HTMLAnchorElement>(
+        '.product-verbish a[href="https://verbish.now"]',
+      ),
+    ).not.toBeNull();
+    expect(
+      host.querySelector<HTMLAnchorElement>(
+        'a[href="mailto:contact@mail.lid.top"]',
+      ),
+    ).not.toBeNull();
+    expect(host.textContent).not.toContain("Resume");
+  });
+
+  it("renders the supplied product demos as playable videos", () => {
+    const host = mountApp();
+
+    for (const product of spotlightProducts) {
+      const video = host.querySelector<HTMLVideoElement>(
+        `#${product.slug} video`,
+      );
+      expect(video).not.toBeNull();
+      expect(video?.controls).toBe(true);
+      expect(
+        video?.querySelector('source[type="video/mp4"]')?.getAttribute("src"),
+      ).toBe(product.media.video);
+      expect(
+        video?.querySelector('source[type="video/webm"]')?.getAttribute("src"),
+      ).toBe(product.media.webm);
+    }
+  });
+
+  it("keeps the project archive in true recency order", () => {
+    const host = mountApp();
+    const titles = Array.from(host.querySelectorAll(".archive-name")).map(
+      (element) => element.textContent?.trim(),
     );
 
     expect(titles.slice(0, 4)).toEqual([
@@ -86,59 +86,82 @@ describe("portfolio application", () => {
     ]);
   });
 
+  it("searches and filters projects using specific project types", async () => {
+    const host = mountApp();
+    const openCodeFilter = Array.from(
+      host.querySelectorAll<HTMLButtonElement>(".archive-filters button"),
+    ).find((button) => button.textContent?.startsWith("OpenCode Plugin"));
+
+    expect(openCodeFilter).toBeDefined();
+    openCodeFilter!.click();
+    await Promise.resolve();
+    expect(host.querySelectorAll(".archive-row")).toHaveLength(4);
+    expect(
+      Array.from(host.querySelectorAll(".archive-meta"), (meta) =>
+        meta.textContent?.trim(),
+      ),
+    ).toEqual(Array(4).fill("OpenCode Plugin"));
+
+    const search = host.querySelector<HTMLInputElement>(
+      ".archive-search input",
+    );
+    search!.value = "later";
+    search!.dispatchEvent(new InputEvent("input", { bubbles: true }));
+    await Promise.resolve();
+    expect(host.querySelectorAll(".archive-row")).toHaveLength(1);
+    expect(host.querySelector(".archive-name")?.textContent).toContain(
+      "opencode-later",
+    );
+  });
+
+  it("shows technology tags without project numbers or visible dates", () => {
+    const host = mountApp();
+
+    expect(
+      host.querySelectorAll(".archive-tags button").length,
+    ).toBeGreaterThan(projects.length);
+    expect(host.querySelector(".archive-number")).toBeNull();
+    for (const meta of host.querySelectorAll(".archive-meta")) {
+      expect(meta.textContent).not.toMatch(/\b20\d{2}\b/);
+    }
+  });
+
+  it("keeps project images and videos available in the archive", () => {
+    const host = mountApp();
+
+    expect(host.querySelectorAll(".archive-media-button")).toHaveLength(
+      projects.length,
+    );
+    expect(
+      host.querySelector(
+        '.archive-media-dialog video[aria-label="Nocuft compiling and deploying a DiamondFire project"]',
+      ),
+    ).not.toBeNull();
+    expect(
+      host
+        .querySelector<HTMLImageElement>(
+          '.archive-media-dialog img[alt="GitNotes displaying an interactive note above a GitHub commit diff"]',
+        )
+        ?.getAttribute("src"),
+    ).toBe("./media/projects/gitnotes/cover-1280.webp");
+  });
+
+  it("prefers a live project destination in the compact archive", () => {
+    const host = mountApp();
+    const gitNotes = Array.from(host.querySelectorAll(".archive-row")).find(
+      (row) => row.querySelector(".archive-name")?.textContent === "GitNotes",
+    );
+
+    expect(gitNotes?.querySelector<HTMLAnchorElement>("a")?.href).toBe(
+      "https://chromewebstore.google.com/detail/gitnotes/inhgnndenedfophhcbpjdocjkdgomklm",
+    );
+  });
+
   it("uses the current Moondust docs URL", () => {
     const moondust = projects.find((project) => project.slug === "moondust");
 
     expect(moondust?.links.find((link) => link.kind === "docs")?.href).toBe(
       "https://zackarysantana.github.io/moondust/",
     );
-  });
-
-  it("renders the final Nocuft demo as a playable video", () => {
-    const host = mountApp();
-    const video = host.querySelector<HTMLVideoElement>(
-      'video[aria-label="Nocuft compiling and deploying a DiamondFire project"]',
-    );
-
-    expect(video).not.toBeNull();
-    expect(video?.controls).toBe(true);
-    expect(
-      video?.querySelector('source[type="video/mp4"]')?.getAttribute("src"),
-    ).toBe("./media/projects/nocuft/demo.mp4");
-    expect(
-      video?.querySelector('source[type="video/webm"]')?.getAttribute("src"),
-    ).toBe("./media/projects/nocuft/demo.webm");
-  });
-
-  it("renders the MongoDB OpenFeature demo as a playable video", () => {
-    const host = mountApp();
-    const video = host.querySelector<HTMLVideoElement>(
-      'video[aria-label="MongoDB OpenFeature provider and editor demonstration"]',
-    );
-
-    expect(video).not.toBeNull();
-    expect(video?.controls).toBe(true);
-    expect(
-      video?.querySelector('source[type="video/mp4"]')?.getAttribute("src"),
-    ).toBe("./media/projects/openfeature-go/demo.mp4");
-    expect(
-      video?.querySelector('source[type="video/webm"]')?.getAttribute("src"),
-    ).toBe("./media/projects/openfeature-go/demo.webm");
-  });
-
-  it("renders the Moondust demo as a playable video", () => {
-    const host = mountApp();
-    const video = host.querySelector<HTMLVideoElement>(
-      'video[aria-label="Moondust local application demonstration"]',
-    );
-
-    expect(video).not.toBeNull();
-    expect(video?.controls).toBe(true);
-    expect(
-      video?.querySelector('source[type="video/mp4"]')?.getAttribute("src"),
-    ).toBe("./media/projects/moondust/demo.mp4");
-    expect(
-      video?.querySelector('source[type="video/webm"]')?.getAttribute("src"),
-    ).toBe("./media/projects/moondust/demo.webm");
   });
 });

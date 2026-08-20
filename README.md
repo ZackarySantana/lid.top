@@ -1,6 +1,6 @@
 # lid.top
 
-Zackary Santana's static portfolio, built with the Solid 2 release candidate and deployed to GitHub Pages.
+Zackary Santana's product-focused personal site, built with the Solid 2 release candidate and deployed to GitHub Pages.
 
 The production build renders the complete page on the server during CI, writes that response to `dist/client/index.html`, and deploys only static HTML, CSS, JavaScript, fonts, and media. No server is required after the build.
 
@@ -44,14 +44,26 @@ Projects are local, typed content. The site does not depend on GitHub at build t
 
 If a cover is absent, the media script creates a branded fallback from the project title and category. Project links are optional, which allows older archive projects to remain visible without publishing dead URLs.
 
+## Adding a spotlight product
+
+The products receiving the most attention live in `src/content/products.ts`. The homepage intentionally gives these products much more room than the broader project archive.
+
+1. Add the product copy, destination, facts, and media paths to `products`.
+2. Set `spotlight: true` only when it should compete for one of the two large homepage positions. Additional products automatically enter the compact product index.
+3. Add original media under `media-source/products/<slug>/`.
+4. Name the primary screenshot `cover` and the primary video `demo`.
+5. Run `npm run media:prepare` to generate responsive images, web video formats, and a poster.
+
+The spotlight layout is content-driven, but each product can use its own color and media composition through its slug class in `src/styles/global.css`.
+
 ## Content and media
 
 - Project content: `src/content/projects/`
+- Spotlight product content: `src/content/products.ts`
 - Experience content: `src/content/experience.ts`
 - Personal links and hero copy: `src/content/site.ts`
-- Original media: `media-source/projects/`
-- Generated media: `public/media/projects/`
-- Resume: `public/Zackary-Santana-Resume.pdf`
+- Original media: `media-source/projects/` and `media-source/products/`
+- Generated media: `public/media/projects/` and `public/media/products/`
 
 Generated media is rebuilt before every production build. Images are emitted as responsive WebP and AVIF files. Videos are capped at a 1280-pixel width and emitted as MP4 and WebM with a poster frame.
 

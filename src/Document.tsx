@@ -6,7 +6,7 @@ import type { ParentProps } from "solid-js";
 import "./styles/global.css";
 
 const description =
-  "Zackary Santana builds developer tools, CI/CD systems, infrastructure, and polished web products.";
+  "dailies.now and verbish.now by Zackary Santana, a software engineer at MongoDB.";
 
 export default function Document(props: ParentProps): JSX.Element {
   return (
@@ -20,7 +20,7 @@ export default function Document(props: ParentProps): JSX.Element {
         <meta name="author" content="Zackary Santana" />
         <meta name="robots" content="index, follow" />
 
-        <title>Zackary Santana | Software Engineer</title>
+        <title>Zackary Santana | dailies.now, verbish.now</title>
         <link rel="canonical" href="https://lid.top/" />
         <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
         <link rel="manifest" href="./site.webmanifest" />
@@ -29,20 +29,20 @@ export default function Document(props: ParentProps): JSX.Element {
         <meta property="og:site_name" content="lid.top" />
         <meta
           property="og:title"
-          content="Zackary Santana | Software Engineer"
+          content="Zackary Santana | dailies.now, verbish.now"
         />
         <meta property="og:description" content={description} />
         <meta property="og:url" content="https://lid.top/" />
         <meta property="og:image" content="https://lid.top/social-card.png" />
         <meta
           property="og:image:alt"
-          content="Zackary Santana, software engineer"
+          content="Zackary Santana, dailies.now and verbish.now"
         />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Zackary Santana | Software Engineer"
+          content="Zackary Santana | dailies.now, verbish.now"
         />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content="https://lid.top/social-card.png" />
@@ -54,6 +54,7 @@ export default function Document(props: ParentProps): JSX.Element {
             "@type": "Person",
             name: "Zackary Santana",
             url: "https://lid.top/",
+            email: "mailto:contact@mail.lid.top",
             jobTitle: "Software Engineer III",
             worksFor: {
               "@type": "Organization",
@@ -62,6 +63,11 @@ export default function Document(props: ParentProps): JSX.Element {
             sameAs: [
               "https://github.com/ZackarySantana",
               "https://www.linkedin.com/in/zackary-santana/",
+            ],
+            knowsAbout: [
+              "Product engineering",
+              "Developer tools",
+              "Web applications",
             ],
           })}
         />

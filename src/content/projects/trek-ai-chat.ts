@@ -10,7 +10,7 @@ export default defineProject({
     "Trip-scoped AI conversations that prepare travel changes for human review.",
   description:
     "TREK Assistant adds private and shared planning threads, OpenRouter streaming, Google Places search, and reviewable proposals for places, itineraries, and day notes without letting the model mutate a trip on its own.",
-  category: "Extension",
+  category: "TREK Plugin",
   technologies: [
     "JavaScript",
     "TREK SDK",

@@ -9,7 +9,7 @@ export default defineProject({
   shortDescription: "A Chrome extension that brings git notes back to GitHub.",
   description:
     "GitHub stores git notes but no longer displays them. GitNotes restores that missing context with badges, Markdown rendering, sandboxed interactive reports, and links that jump directly into a diff.",
-  category: "Extension",
+  category: "Chrome Extension",
   technologies: ["TypeScript", "Chrome", "GitHub API", "Sandboxed HTML"],
   links: [
     {

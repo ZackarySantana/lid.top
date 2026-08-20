@@ -10,7 +10,7 @@ export default defineProject({
     "A focused review queue layered onto GitHub pull request pages.",
   description:
     "gitreview adds age-based review zones, local filters, approval context, requested teams, and page navigation while keeping tokens local and optional.",
-  category: "Extension",
+  category: "Chrome Extension",
   technologies: ["TypeScript", "Chrome", "WXT", "GitHub API", "Shadow DOM"],
   links: [
     {

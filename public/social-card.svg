@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#0b0d11"/>
   <path d="M72 92h1056M72 520h1056" stroke="#3b434f"/>
-  <text x="72" y="68" fill="#7c8695" font-family="monospace" font-size="20">LID.TOP / SOFTWARE ENGINEER</text>
+  <text x="72" y="68" fill="#7c8695" font-family="monospace" font-size="20">LID.TOP / ZACKARY SANTANA</text>
   <text x="72" y="270" fill="#eceef2" font-family="Arial, sans-serif" font-size="82" font-weight="600" letter-spacing="-3">Zackary Santana</text>
-  <text x="72" y="342" fill="#a7aebb" font-family="Arial, sans-serif" font-size="31">I build tools that help people build better software.</text>
-  <text x="72" y="562" fill="#7c8695" font-family="monospace" font-size="18">PROJECTS / EXPERIENCE / OPEN SOURCE</text>
-  <circle cx="1118" cy="558" r="7" fill="#6a9dff"/>
+  <text x="72" y="342" fill="#a7aebb" font-family="Arial, sans-serif" font-size="31">dailies.now / verbish.now</text>
+  <text x="72" y="562" fill="#7c8695" font-family="monospace" font-size="18">DAILIES.NOW / VERBISH.NOW / 18 OTHER PROJECTS</text>
+  <circle cx="1118" cy="558" r="7" fill="#d8ff71"/>
 </svg>

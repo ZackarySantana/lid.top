@@ -15,8 +15,11 @@ import sharp from "sharp";
 const execFileAsync = promisify(execFile);
 const root = process.cwd();
 const projectContentDirectory = path.join(root, "src/content/projects");
-const sourceRoot = path.join(root, "media-source/projects");
-const outputRoot = path.join(root, "public/media/projects");
+const productContentFile = path.join(root, "src/content/products.ts");
+const projectSourceRoot = path.join(root, "media-source/projects");
+const projectOutputRoot = path.join(root, "public/media/projects");
+const productSourceRoot = path.join(root, "media-source/products");
+const productOutputRoot = path.join(root, "public/media/products");
 const imageExtensions = [".png", ".jpg", ".jpeg", ".webp", ".avif", ".svg"];
 const videoExtensions = [".mp4", ".mov", ".m4v", ".webm"];
 
@@ -94,6 +97,16 @@ async function projectDefinitions() {
   }
 
   return definitions;
+}
+
+async function productDefinitions() {
+  const source = await readFile(productContentFile, "utf8");
+  return Array.from(
+    source.matchAll(
+      /slug:\s*"([^"]+)"[\s\S]*?name:\s*"([^"]+)"[\s\S]*?eyebrow:\s*"([^"]+)"/g,
+    ),
+    ([, slug, title, eyebrow]) => ({ slug, title, eyebrow }),
+  );
 }
 
 async function optionalDirectoryFiles(directory) {
@@ -201,24 +214,33 @@ async function prepareVideo(sourceDirectory, outputDirectory) {
   }
 }
 
-await mkdir(outputRoot, { recursive: true });
 const projects = await projectDefinitions();
+const products = await productDefinitions();
 
-for (const project of projects) {
-  const sourceDirectory = path.join(sourceRoot, project.slug);
-  const outputDirectory = path.join(outputRoot, project.slug);
-  await mkdir(outputDirectory, { recursive: true });
-  await prepareImage(project, sourceDirectory, outputDirectory);
-  await prepareVideo(sourceDirectory, outputDirectory);
+async function prepareCollection(definitions, sourceRoot, outputRoot) {
+  await mkdir(outputRoot, { recursive: true });
+
+  for (const definition of definitions) {
+    const sourceDirectory = path.join(sourceRoot, definition.slug);
+    const outputDirectory = path.join(outputRoot, definition.slug);
+    await mkdir(outputDirectory, { recursive: true });
+    await prepareImage(definition, sourceDirectory, outputDirectory);
+    await prepareVideo(sourceDirectory, outputDirectory);
+  }
+
+  await writeFile(
+    path.join(outputRoot, "manifest.json"),
+    `${JSON.stringify({ generatedAt: new Date().toISOString(), items: definitions.map(({ slug }) => slug) }, null, 2)}\n`,
+  );
 }
+
+await prepareCollection(projects, projectSourceRoot, projectOutputRoot);
+await prepareCollection(products, productSourceRoot, productOutputRoot);
 
 await sharp(path.join(root, "public/social-card.svg"))
   .png({ compressionLevel: 9, palette: true })
   .toFile(path.join(root, "public/social-card.png"));
 
-await writeFile(
-  path.join(outputRoot, "manifest.json"),
-  `${JSON.stringify({ generatedAt: new Date().toISOString(), projects: projects.map(({ slug }) => slug) }, null, 2)}\n`,
+console.log(
+  `Prepared media for ${projects.length} projects and ${products.length} products.`,
 );
-
-console.log(`Prepared media for ${projects.length} projects.`);

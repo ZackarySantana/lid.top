@@ -10,7 +10,7 @@ export default defineProject({
     "Personal place rankings built from fast, pairwise travel comparisons.",
   description:
     "TREK Rankings turns saved places into personal ordered lists through binary insertion, all-trip import, manual entries, public profile links, and an optional bridge back into editable TREK places.",
-  category: "Extension",
+  category: "TREK Plugin",
   technologies: ["JavaScript", "TREK SDK", "SQLite", "Playwright"],
   links: [
     {

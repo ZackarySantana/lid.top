@@ -3,14 +3,14 @@ import { defineProject } from "../types";
 export default defineProject({
   slug: "opencode-sessions-all",
   title: "opencode-sessions-all",
-  eyebrow: "OpenCode plugin",
+  eyebrow: "OpenCode Plugin",
   year: "2026",
   date: "2026-08-04T03:17:34Z",
   shortDescription:
     "Cross-project session search and navigation inside OpenCode's native TUI.",
   description:
     "The plugin indexes sessions and message text from every opened project into SQLite, then provides a keyboard-first browser for search, project filtering, subagent discovery, and session navigation.",
-  category: "Extension",
+  category: "OpenCode Plugin",
   technologies: ["TypeScript", "Bun", "OpenCode", "OpenTUI", "SQLite"],
   links: [
     {

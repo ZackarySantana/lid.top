@@ -9,7 +9,7 @@ export default defineProject({
   shortDescription: "Evergreen CI workflows directly inside VS Code.",
   description:
     "Grove lets developers inspect, create, configure, restart, abort, and navigate Evergreen patches and tasks without leaving their editor.",
-  category: "Extension",
+  category: "VS Code Extension",
   technologies: ["TypeScript", "VS Code", "Evergreen", "CI/CD"],
   links: [
     {

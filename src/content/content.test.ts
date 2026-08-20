@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { experiences } from "./experience";
 import { projectRecency, projects } from "./projects";
+import { spotlightProducts } from "./products";
 import { projectCategories } from "./types";
 
 describe("portfolio content", () => {
@@ -55,5 +56,20 @@ describe("portfolio content", () => {
       "MetLife",
     ]);
     expect(experiences[0].period).toBe("August 2023 to present");
+  });
+
+  it("defines distinct product spotlights with local demos", () => {
+    expect(spotlightProducts.map((product) => product.slug)).toEqual([
+      "dailies",
+      "verbish",
+    ]);
+
+    for (const product of spotlightProducts) {
+      expect(() => new URL(product.href)).not.toThrow();
+      expect(product.media.video).toMatch(/^\.\/media\/products\//);
+      expect(product.media.webm).toMatch(/^\.\/media\/products\//);
+      expect(product.media.poster).toMatch(/^\.\/media\/products\//);
+      expect(product.details).toHaveLength(3);
+    }
   });
 });

@@ -2,7 +2,10 @@ export const projectCategories = [
   "Developer Tool",
   "Product",
   "Library",
-  "Extension",
+  "OpenCode Plugin",
+  "Chrome Extension",
+  "TREK Plugin",
+  "VS Code Extension",
   "Community",
   "Game",
 ] as const;

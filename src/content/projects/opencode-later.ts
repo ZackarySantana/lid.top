@@ -3,14 +3,14 @@ import { defineProject } from "../types";
 export default defineProject({
   slug: "opencode-later",
   title: "opencode-later",
-  eyebrow: "OpenCode plugin",
+  eyebrow: "OpenCode Plugin",
   year: "2026",
   date: "2026-08-05T02:19:12Z",
   shortDescription:
     "A persistent Later list with native OpenCode sidebar integration.",
   description:
     "The plugin adds a global SQLite-backed list, native sidebar section, and keyboard-first management view for adding, editing, completing, restoring, deleting, reordering, and starting saved items.",
-  category: "Extension",
+  category: "OpenCode Plugin",
   technologies: ["TypeScript", "Bun", "OpenCode", "OpenTUI", "SQLite"],
   links: [
     {

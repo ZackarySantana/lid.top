@@ -3,14 +3,14 @@ import { defineProject } from "../types";
 export default defineProject({
   slug: "opencode-context",
   title: "opencode-context",
-  eyebrow: "OpenCode plugin",
+  eyebrow: "OpenCode Plugin",
   year: "2026",
   date: "2026-08-05T01:42:29Z",
   shortDescription:
     "A native OpenCode modal for inspecting retained context and token usage.",
   description:
     "The TUI reports recorded token usage, estimated context utilization, cache efficiency, message activity, and the largest retained contributors without invoking another model.",
-  category: "Extension",
+  category: "OpenCode Plugin",
   technologies: ["TypeScript", "Bun", "OpenCode", "TUI"],
   links: [
     {

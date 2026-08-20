@@ -3,14 +3,14 @@ import { defineProject } from "../types";
 export default defineProject({
   slug: "opencode-cost",
   title: "opencode-cost",
-  eyebrow: "OpenCode plugin",
+  eyebrow: "OpenCode Plugin",
   year: "2026",
   date: "2026-08-04T01:46:05Z",
   shortDescription:
     "Persistent cost and token tracking through a native OpenCode dashboard.",
   description:
     "The plugin records OpenCode's provider-calculated costs and token telemetry in an idempotent SQLite ledger, with native date, project, provider, and model filters.",
-  category: "Extension",
+  category: "OpenCode Plugin",
   technologies: ["TypeScript", "Bun", "OpenCode", "OpenTUI", "SQLite"],
   links: [
     {
